@@ -34,6 +34,7 @@ def infer_detector(image=None, model=None, transform=None, size=224, iou=0.5):
     image = cv2.cvtColor(src=cv2.resize(src=image, dsize=(size, size), interpolation=cv2.INTER_AREA), 
                          code=cv2.COLOR_BGR2RGB)
 
+    model.to(device)
     with torch.no_grad():
         output = model(transform(image).to(device).unsqueeze(dim=0))
     cnts, scrs, lbls = output[0]["scores"], output[0]["scores"], output[0]["labels"]
@@ -72,6 +73,7 @@ def infer_classifier(image=None, model=None, transform=None, size=224):
     image = cv2.cvtColor(src=cv2.resize(src=image, dsize=(size, size), interpolation=cv2.INTER_AREA), 
                          code=cv2.COLOR_BGR2RGB)
 
+    model.to(device)
     with torch.no_grad():
         output = torch.argmax(model(transform(image).to(device).unsqueeze(dim=0)), dim=1)
 
@@ -92,7 +94,9 @@ def infer_classifier(image=None, model=None, transform=None, size=224):
         ii. Unique Class Index present in class_index_image
 """
 def image_segment(image=None, model=None, transform=None):
+    image = cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
 
+    model.to(device)
     with torch.no_grad():
         output = model(transform(image).to(device).unsqueeze(0))["out"]
 

@@ -24,7 +24,7 @@ def breaker(num=50, char="*"):
 
 """
     1. Assumes image to be in BGR Format
-    2. Assumes Model is in .eval() mode
+    2. Assumes Model is in .eval() mode and present on correct device
     3. Present Script only gives most confident detection; modify if more are required
     4. Returns image with boudling box drawn on it.
 """
@@ -34,7 +34,6 @@ def infer_detector(image=None, model=None, transform=None, size=224, iou=0.5):
     image = cv2.cvtColor(src=cv2.resize(src=image, dsize=(size, size), interpolation=cv2.INTER_AREA), 
                          code=cv2.COLOR_BGR2RGB)
 
-    model.to(device)
     with torch.no_grad():
         output = model(transform(image).to(device).unsqueeze(dim=0))
     cnts, scrs, lbls = output[0]["scores"], output[0]["scores"], output[0]["labels"]
@@ -62,7 +61,7 @@ def infer_detector(image=None, model=None, transform=None, size=224, iou=0.5):
 
 """
     1. Assumes image to be in BGR Format
-    2. Assumes Model is in .eval() mode
+    2. Assumes Model is in .eval() mode and present on correct device
     3. Returns a tuple 
         i.  Image with class label present
         ii. Class Label Index
@@ -88,7 +87,7 @@ def infer_classifier(image=None, model=None, transform=None, size=224):
 
 """
     1. Assumes image to be in BGR Format
-    2. Assumes Model is in .eval() mode
+    2. Assumes Model is in .eval() mode and present on correct device
     3. Returns a tuple 
         i.  Segmented Image
         ii. Unique Class Index present in class_index_image

@@ -26,7 +26,8 @@ def get_model(model_name=None):
 
 # ********************************************************************************************* #
 """
-    Assumes image is in BGR format
+    1. Assumes image is in BGR format
+    2. Returns processed image and result
 """
 def infer_image(model_name=None, image=None):
     """
@@ -81,3 +82,41 @@ def infer_realtime(device_id=0, model_name=None):
 
     vid.release()
     cv2.destroyAllWindows()
+
+
+# ********************************************************************************************* #
+
+"""
+    path = PATH_TO_VIDEO_FILE/Video.mp4
+"""
+def infer_video(device_id=0, model_name=None, path=None):
+    network, (input_blob, output_blob), (N, C, H, W) = get_model(model_name=model_name)
+
+    vid = cv2.VideoCapture(path)
+
+    while vid.isOpened():
+        ret, frame = vid.read()
+
+        if ret:
+            disp_frame = frame.copy()
+            dh, dw, _ = disp_frame.shape
+
+            frame = cv2.resize(src=cv2.cvtColor(src=frame, code=cv2.COLOR_BAYER_BG2BGR), dsize=(W, H), interpolation=cv2.INTER_AREA).transpose(2, 0, 1)
+            result = network.infer({input_blob : frame})[output_blob]
+
+            """
+                Processing ....
+                Get Processed Frame
+                disp_frame is now Processed Frame
+            """
+            
+            cv2.imshow("Feed", disp_frame)
+            if cv2.waitKey(15) == ord("q"):
+                break
+        else:
+            vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
+
+
+    vid.release()
+    cv2.destroyAllWindows()
+

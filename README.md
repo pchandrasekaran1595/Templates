@@ -1,1 +1,1 @@
-Various Python Template Scripts
+Python Template Scripts

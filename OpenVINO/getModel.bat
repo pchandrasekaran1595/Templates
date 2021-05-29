@@ -15,6 +15,7 @@ echo.
 :: Setting up default values
 set TARGET=CPU
 set BUILD_FOLDER=%USERPROFILE%\Documents\
+:: set BUILD_FOLDER=%G:\%
 set ROOT_DIR=C:\Program Files (x86)\Intel\openvino_2021.3.394
 
 set models_path=%BUILD_FOLDER%\openvino_models\models

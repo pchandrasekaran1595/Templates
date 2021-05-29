@@ -92,15 +92,18 @@ def infer_classifier(image=None, model=None, transform=None, size=224):
         i.  Segmented Image
         ii. Unique Class Index present in class_index_image
 """
-def image_segment(image=None, model=None, transform=None):
-    image = cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB)
+def image_segment(image=None, model=None, transform=None, size=520):
+    h, w, _ = image.shape
+    image = cv2.resize(src=cv2.cvtColor(src=image, code=cv2.COLOR_BGR2RGB), dsize=(size, size), interpolation=cv2.INTER_AREA)
 
     model.to(device)
     with torch.no_grad():
         output = model(transform(image).to(device).unsqueeze(0))["out"]
 
     class_index_image = torch.argmax(output[0], dim=0)
-    return decode(class_index_image=class_index_image), np.unique(class_index_image.detach().cpu().numpy())
+    class_idxs = np.unique(class_index_image.detach().cpu().numpy())
+    segmented_image = cv2.resize(src=decode(class_index_image=class_index_image), dsize=(w, h), interpolation=cv2.INTER_AREA)
+    return segmented_image, class_idxs
 
 
 def decode(class_index_image=None):

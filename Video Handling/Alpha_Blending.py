@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 
 # out = alpha * fg + (1-alpha) * bg
+# Use frame as bg, image as fg
 
 WIDTH, HEIGHT = 1280, 720
 PATH = "PATH_TO_IMAGE_FILE"

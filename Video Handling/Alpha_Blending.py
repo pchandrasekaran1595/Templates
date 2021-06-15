@@ -21,7 +21,7 @@ def __initvideo__(device_id=0):
 
 
 def __getalphaimage__(path, name):
-    return cv2.resize(src=cv2.cvtColor(src=cv2.imread(os.path.join(path, name), cv2.IMREAD_COLOR), code=cv2.COLOR_BGR2RGB), dsize=(WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
+    return cv2.resize(src=cv2.imread(os.path.join(path, name), cv2.IMREAD_COLOR), dsize=(WIDTH, HEIGHT), interpolation=cv2.INTER_AREA)
 
 
 def app():

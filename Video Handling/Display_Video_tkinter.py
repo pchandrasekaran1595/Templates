@@ -1,4 +1,4 @@
-# FIX
+# FIX: Do not initialize capture object within the init
 
 
 

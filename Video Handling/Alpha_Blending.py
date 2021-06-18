@@ -1,3 +1,5 @@
+# FIX: Convert to use a class object for initializing Video Capture oject
+
 import os
 import cv2
 import numpy as np

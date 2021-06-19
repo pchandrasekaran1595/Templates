@@ -30,11 +30,14 @@ def handle_video(path=None):
             """
                 Process the frame
             """
-            cv2.imshow("Blended", frame)
+            cv2.imshow("Processed", frame)
             if cv2.waitKey(1) == ord("q"):
                 break
         else:
-            break
+            if path is not None:
+                CaptureObject.vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
+            else:
+                break
     
     CaptureObject.stop()
     cv2.destroyAllWindows()

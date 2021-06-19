@@ -23,7 +23,6 @@ def handle_video(path=None):
     else:
         CaptureObject = Handler(path=path,  width=width, height=height, fps=fps)
         CaptureObject.start()
-    
     while True:
         ret, frame = CaptureObject.getframe()
         if ret:
@@ -31,13 +30,17 @@ def handle_video(path=None):
                 Process the frame
             """
             cv2.imshow("Processed", frame)
-            if cv2.waitKey(1) == ord("q"):
-                break
+            if path is None:
+                if cv2.waitKey(1) == ord("q"):
+                    break
+            else:
+                if cv2.waitKey(15) == ord("q"):
+                    break
         else:
             if path is not None:
                 CaptureObject.vid.set(cv2.CAP_PROP_POS_FRAMES, 0)
             else:
                 break
-    
     CaptureObject.stop()
+
     cv2.destroyAllWindows()
